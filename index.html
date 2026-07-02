@@ -108,10 +108,12 @@
         <div class="content has-text-justified">
           <!-- TODO: Replace with your paper abstract -->
           <p>
-            Large audio-language models (LALMs) can generate reasoning chains for their predictions, but it remains unclear whether these reasoning chains remain grounded in the input audio. In this paper, we propose an RL-based strategy that grounds the reasoning outputs of LALMs with explicit timestamp annotations referring to relevant segments of the audio signal.
-Our analysis shows that timestamp grounding leads the model to attend more strongly to audio tokens during reasoning generation.
-Experiments on four speech-based benchmark datasets demonstrate that our approach improves performance compared to both zero-shot reasoning and fine-tuning without timestamp grounding. 
-Additionally, grounding amplifies desirable reasoning behaviors, such as region exploration, audiology verification, and consistency, underscoring the importance of grounding mechanisms for faithful multimodal reasoning. 
+            Large audio-language models (LALMs) can generate reasoning chains for speech understanding tasks, but it remains unclear whether these chains are faithfully grounded in the input audio. 
+            We show that correct predictions do not necessarily imply faithful audio grounding: our analysis reveals that baseline LALMs often allocate limited attention to audio tokens, indicating a strong text-biased reasoning tendency.
+            To address this issue, we propose Timestamp-Grounded Speech Reasoning (TGSR), a two-stage framework that grounds intermediate reasoning steps in localized audio evidence. 
+            TGSR first learns a timestamp-grounding primitive through supervised timestamp alignment, and then uses reward-based optimization to encourage concise timestamp-grounded reasoning traces.
+            Experiments across multiple speech benchmarks show that TGSR achieves stronger end-task accuracy than zero-shot reasoning baselines, representative open-source LALMs, and prior audio reasoning methods, with consistent gains on both Qwen2.5-Omni and Audio Flamingo 3.
+            Further behavior-level analyses and a human study demonstrate that TGSR promotes region exploration, audio-based verification, and reasoning-answer consistency, making LALM predictions more faithful, verifiable, and explainable.
           </p>
         </div>
       </div>
@@ -125,17 +127,43 @@ Additionally, grounding amplifies desirable reasoning behaviors, such as region 
 <section class="section">
   <div class="container is-max-widescreen">
     <h2 class="title is-3 has-text-centered">Method</h2>
-    <img src="static/images/fig2_overview.png" alt="Method overview" style="width:100%; margin-bottom: 2rem;">
+
+    <img 
+      src="static/images/fig2_overview.png" 
+      alt="Method overview" 
+      style="width: 100%; margin-bottom: 2rem;"
+    >
+
     <div class="columns is-centered">
       <div class="column is-four-fifths">
         <div class="content has-text-justified">
-          <p>Our framework consists of a <strong>two-stage training pipeline</strong>. In <strong>Stage 1 (STA)</strong>, we train the model on timestamp prediction tasks using ~268k annotated examples, building a temporal grounding foundation. In <strong>Stage 2 (GRPO)</strong>, we apply reinforcement learning with two rewards: an <em>answer correctness reward</em> and a <em>timestamp grounding reward</em> (<em>R</em><sub>tg</sub>) that encourages concise, grounded reasoning. The final reward is <em>R = R</em><sub>answer</sub> + <em>R</em><sub>tg</sub>.</p>
+          <p>
+            Our method trains LALMs to generate reasoning chains grounded in
+            specific audio timestamps. We use a <strong>two-stage training
+            pipeline</strong>: <strong>Stage 1: Supervised Timestamp Alignment
+            (STA)</strong> first teaches the model to predict start-end
+            timestamps for spoken segments using weakly supervised timestamped
+            transcripts. This provides a temporal grounding primitive for
+            localizing audio evidence.
+          </p>
+
+          <p>
+            In <strong>Stage 2: Timestamp-Grounded Reasoning</strong>, we apply
+            <strong>GRPO</strong> to downstream audio question answering. The
+            reward combines answer correctness with a timestamp-grounded reward
+            that encourages concise reasoning supported by localized audio
+            evidence:
+            <em>R</em> =
+            <em>R</em><sub>answer</sub> +
+            <em>R</em><sub>answer</sub> · <em>R</em><sub>tg</sub>.
+            This design rewards grounded reasoning only for correct answers,
+            reducing the risk of plausible but unsupported timestamp usage.
+          </p>
         </div>
       </div>
     </div>
   </div>
 </section>
-<!-- End method -->
 
 
 <!-- Audio Demo Section -->
