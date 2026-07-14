@@ -478,7 +478,14 @@
             with the most pronounced increase observed during the reasoning stage.
           </p>
           <h4 class="title is-5" style="text-align:left;">3. Grounding Improves Reasoning Quality</h4>
-          <p>Timestamp grounding <strong>reshapes reasoning behavior:</strong> the model explores more distinct audio regions, achieves higher audiology verification scores, and produces more consistent reasoning chains.</p>
+          <p>
+            Timestamp grounding <strong>reshapes reasoning behavior:</strong> the model explores more distinct audio regions, achieves higher audiology verification scores, and produces more consistent reasoning chains.
+            These results suggest that grounding improves not only where the model attends, but also how systematically it gathers and integrates acoustic evidence.
+          </p>
+          <h4 class="title is-5" style="text-align:left;">4. Grounded Reasoning Is Verifiable and Explainable</h4>
+          <p>
+            Human evaluation shows that TGSR generally highlights audio segments that are relevant to its reasoning. Annotators found the cited evidence accurate in 63.1% of cases, or 75.6% when partially correct cases are included, and gave high ratings for both helpfulness (3.94) and answer supportiveness (3.96). This suggests that TGSR’s reasoning is not only grounded in audio but also easier for users to verify.
+          </p>
         </div>
       </div>
     </div>
@@ -496,72 +503,88 @@
         <div class="content has-text-justified">
           <p>
             Performance comparison on MMAU-mini-Speech, MMAR-Speech, AIR-Bench, and MELD.
-            Our full model achieves the best overall performance across all benchmarks, even outperforming proprietary models on AIR-Bench and MELD.
+            TGSR improves performance of both Qwen2.5-Omni and Audio Flamingo 3, achieving competitive or superior results compared to proprietary models on several benchmarks.
           </p>
         </div>
         <div class="table-container">
           <table class="table is-bordered is-striped is-hoverable is-fullwidth" style="text-align:center; font-size:0.9rem;">
             <thead>
               <tr>
-                <th style="text-align:left;">Methods</th>
-                <th>Size</th>
-                <th>MMAU-mini Speech (%)</th>
-                <th>MMAR-Speech (%)</th>
-                <th>AIR-Bench SER (%)</th>
-                <th>AIR-Bench SNV (%)</th>
-                <th>AIR-Bench SIC (%)</th>
-                <th>MELD (%)</th>
+                <th rowspan="2" style="text-align:left; vertical-align:middle;">Methods</th>
+                <th rowspan="2" style="vertical-align:middle;">Size</th>
+                <th>MMAU-mini</th>
+                <th>MMAR</th>
+                <th colspan="3">AIR-Bench</th>
+                <th>MELD</th>
+              </tr>
+              <tr>
+                <th>Speech (%)</th>
+                <th>Speech (%)</th>
+                <th>SER (%)</th>
+                <th>SNV (%)</th>
+                <th>SIC (%)</th>
+                <th>(%)</th>
               </tr>
             </thead>
             <tbody>
-              <tr><td colspan="8" style="text-align:left; font-style:italic; background:#f5f5f5;">Proprietary Models</td></tr>
+              <tr><td colspan="8" style="text-align:left; font-style:italic; background:#f5f5f5;"><strong>Proprietary Models</strong></td></tr>
               <tr>
-                <td style="text-align:left;">Gemini-2.5-Flash</td>
+                <td style="text-align:left;">Gemini 2.5 Flash</td>
                 <td>–</td>
-                <td><strong>75.08</strong></td>
-                <td>72.41</td>
+                <td>75.1</td>
+                <td>72.1</td>
                 <td>56.4</td>
                 <td>68.5</td>
-                <td>83.6</td>
+                <td>88.6</td>
                 <td>61.5</td>
               </tr>
               <tr>
                 <td style="text-align:left;">GPT-4o Audio</td>
                 <td>–</td>
-                <td>66.67</td>
-                <td>20.41</td>
+                <td>66.7</td>
+                <td>70.4</td>
                 <td>51.2</td>
                 <td>61.6</td>
-                <td><strong>89.3</strong></td>
+                <td>89.3</td>
                 <td>62.5</td>
               </tr>
-              <tr><td colspan="8" style="text-align:left; font-style:italic; background:#f5f5f5;">Open-source Models</td></tr>
+              <tr><td colspan="8" style="text-align:left; font-style:italic; background:#f5f5f5;"><strong>Open-source Models</strong></td></tr>
               <tr>
                 <td style="text-align:left;">SALMONN</td>
                 <td>7B</td>
-                <td>26.43</td>
-                <td>24.35</td>
-                <td>29.0</td>
+                <td>26.4</td>
+                <td>24.3</td>
+                <td>29.9</td>
                 <td>34.3</td>
                 <td>42.3</td>
                 <td>37.2</td>
               </tr>
               <tr>
-                <td style="text-align:left;">Audio Flamingo 3</td>
+                <td style="text-align:left;">Kimi-Audio</td>
                 <td>7B</td>
-                <td>66.37</td>
-                <td>57.48</td>
-                <td>59.5</td>
-                <td><strong>76.8</strong></td>
-                <td>79.6</td>
-                <td>58.5</td>
+                <td>68.5</td>
+                <td>58.1</td>
+                <td><u>64.3</u></td>
+                <td>58.6</td>
+                <td>75.0</td>
+                <td><u>63.7</u></td>
               </tr>
-              <tr><td colspan="8" style="text-align:left; font-style:italic; background:#f5f5f5;">Audio Reasoning Methods</td></tr>
+              <tr>
+                <td style="text-align:left;">Step-Audio 2 mini</td>
+                <td>8B</td>
+                <td>47.7</td>
+                <td>32.7</td>
+                <td>39.5</td>
+                <td>38.0</td>
+                <td>32.4</td>
+                <td>30.9</td>
+              </tr>
+              <tr><td colspan="8" style="text-align:left; font-style:italic; background:#f5f5f5;"><strong>Audio Reasoning Methods</strong></td></tr>
               <tr>
                 <td style="text-align:left;">Audio-CoT</td>
                 <td>8.4B</td>
-                <td>55.26</td>
-                <td>54.01</td>
+                <td>55.3</td>
+                <td>34.0</td>
                 <td>–</td>
                 <td>–</td>
                 <td>–</td>
@@ -570,60 +593,59 @@
               <tr>
                 <td style="text-align:left;">Audio-Reasoner</td>
                 <td>8.4B</td>
-                <td>66.07</td>
-                <td>32.99</td>
+                <td>66.1</td>
+                <td>33.0</td>
                 <td>60.5</td>
                 <td>56.3</td>
-                <td>88.1</td>
+                <td><u>88.1</u></td>
                 <td>63.2</td>
               </tr>
               <tr>
                 <td style="text-align:left;">Audio-Thinker</td>
                 <td>8.4B</td>
-                <td>73.37</td>
-                <td>64.29</td>
+                <td><u>73.4</u></td>
+                <td><u>64.3</u></td>
                 <td>56.2</td>
                 <td>67.5</td>
                 <td>–</td>
                 <td>–</td>
               </tr>
-              <tr><td colspan="8" style="text-align:left; font-style:italic; background:#f5f5f5;">Our Ablation Variants</td></tr>
               <tr>
-                <td style="text-align:left;">Qwen2.5-Omni (baseline)</td>
+                <td style="text-align:left;">Audio Flamingo 3</td>
                 <td>7B</td>
-                <td>70.60</td>
-                <td>59.86</td>
+                <td>66.3</td>
+                <td>57.5</td>
+                <td>59.5</td>
+                <td><u>76.8</u></td>
+                <td>79.6</td>
+                <td>58.5</td>
+              </tr>
+              <tr style="background:#fffbe6;">
+                <td style="text-align:left;"><strong>+ Ours (TGSR)</strong></td>
+                <td>7B</td>
+                <td>71.8</td>
+                <td>60.3</td>
+                <td>61.0</td>
+                <td><strong>78.2</strong></td>
+                <td>84.1</td>
+                <td>63.2</td>
+              </tr>
+              <tr>
+                <td style="text-align:left;">Qwen2.5-Omni</td>
+                <td>8.4B</td>
+                <td>70.6</td>
+                <td>59.9</td>
                 <td>60.2</td>
                 <td>63.9</td>
                 <td>83.5</td>
                 <td>60.3</td>
               </tr>
-              <tr>
-                <td style="text-align:left;">+ Only STA</td>
-                <td>7B</td>
-                <td>71.37</td>
-                <td>61.22</td>
-                <td>59.5</td>
-                <td>66.0</td>
-                <td>84.3</td>
-                <td>62.8</td>
-              </tr>
-              <tr>
-                <td style="text-align:left;">+ Reasoning SFT</td>
-                <td>7B</td>
-                <td>74.47</td>
-                <td>62.93</td>
-                <td>58.5</td>
-                <td>68.1</td>
-                <td>85.0</td>
-                <td>61.8</td>
-              </tr>
-              <tr style="font-weight:bold; background:#fffbe6;">
-                <td style="text-align:left;"><strong>Ours (Full)</strong></td>
-                <td><strong>7B</strong></td>
-                <td>74.47</td>
-                <td><strong>64.63</strong></td>
-                <td><strong>62.5</strong></td>
+              <tr style="background:#fffbe6;">
+                <td style="text-align:left;"><strong>+ Ours (TGSR)</strong></td>
+                <td>8.4B</td>
+                <td><strong>74.5</strong></td>
+                <td><strong>64.6</strong></td>
+                <td><strong>64.5</strong></td>
                 <td>70.4</td>
                 <td><strong>89.3</strong></td>
                 <td><strong>64.6</strong></td>
